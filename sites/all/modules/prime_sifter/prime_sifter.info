@@ -1,0 +1,7 @@
+name = Siftimus Prime
+description = Displays all prime numbers up to given number.
+package = Epicodus Examples
+core = 7.x
+files[] = prime_sifter.module
+files[] = prime_sifter.test
+dependencies[] = simpletest

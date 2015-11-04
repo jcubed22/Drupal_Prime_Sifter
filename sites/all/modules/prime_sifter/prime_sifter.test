@@ -1,0 +1,21 @@
+<?php
+
+class PrimeSifterTestCase extends DrupalUnitTestCase
+{
+
+  public static function getInfo() {
+    return array(
+      'name' => 'Prime Sifter Tests',
+      'description' => 'Tests for the Prime Sifter module.',
+      'group' => 'Epicodus Examples Tests',
+    );
+  }
+
+  function testTinyNumber()
+  {
+    $description = 'Entering 5 should return an array.';
+    $input = 5;
+    $result = sift_primes($input);
+    $this->assertTrue($result, $description);
+  }
+}

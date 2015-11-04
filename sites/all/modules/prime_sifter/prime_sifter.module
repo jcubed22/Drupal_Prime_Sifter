@@ -1,0 +1,74 @@
+<?php
+
+function prime_sifter_menu() {
+  $items = array();
+  $items['primesifter'] = array(
+    'title' => 'Prime Sifter',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('primesifter_form'),
+    'access callback' => TRUE,
+    'type' => MENU_NORMAL_ITEM,
+  );
+  $items['sift_success'] = array(
+    'title' => 'Prime Sifting Success',
+    'page callback' => 'primesift_success',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+  return $items;
+}
+
+function primesifter_form() {
+  $form['input'] = array(
+    '#title' => 'Enter a number',
+    '#type' => 'textfield',
+    '#description' => t('The sifter will return all prime numbers up to the number entered above.'),
+    '#required' => TRUE,
+  );
+  $form['submit'] = array(
+    '#type' => 'submit',
+    '#value' => 'Sift It',
+  );
+  return $form;
+}
+
+function number_list($input) {
+  $numList = array();
+  for ($i = 2; $i <= $input; $i++) {
+    array_push($numList, $i);
+  }
+  return $numList;
+}
+
+function sift_primes($input) {
+  $numArray = number_list($input);
+  $prime = 2;
+  $count = 0;
+  while ($prime <= $input) {
+    foreach ($numArray as $num) {
+      $index = array_search($num, $numArray);
+      if (($num !== $prime) && ($num % $prime === 0)) {
+        array_splice($numArray, $index, 1);
+      }
+    }
+    $count++;
+    $prime = $numArray[$count];
+  }
+  return $numArray;
+}
+
+function primesifter_form_submit($form, &$form_state) {
+  $input = $form_state['values']['input'];
+  $result = sift_primes($input);
+  $_SESSION['primes'] = implode(', ', $result);
+  $_SESSION['input'] = $input;
+
+  $form_state['redirect'] = 'sift_success';
+}
+
+function primesift_success() {
+  $primes = $_SESSION['primes'];
+  $input = $_SESSION['input'];
+
+  return '<p>The prime numbers up to ' . $primes . '</p>';
+}
