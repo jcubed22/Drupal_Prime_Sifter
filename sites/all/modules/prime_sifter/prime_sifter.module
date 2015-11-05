@@ -43,16 +43,13 @@ function number_list($input) {
 function sift_primes($input) {
   $numArray = number_list($input);
   $prime = 2;
-  $count = 0;
   while ($prime <= $input) {
-    foreach ($numArray as $num) {
-      $index = array_search($num, $numArray);
+    foreach ($numArray as $key => $num) {
       if (($num !== $prime) && ($num % $prime === 0)) {
-        array_splice($numArray, $index, 1);
+        unset($numArray[$key]);
       }
     }
-    $count++;
-    $prime = $numArray[$count];
+    $prime++;
   }
   return $numArray;
 }
@@ -70,5 +67,5 @@ function primesift_success() {
   $primes = $_SESSION['primes'];
   $input = $_SESSION['input'];
 
-  return '<p>The prime numbers up to ' . $primes . '</p>';
+  return '<p>The prime numbers up to <strong>' . $input . '</strong> are: ' . $primes . '</p>';
 }
